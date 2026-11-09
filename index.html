@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}</style>
+<title>Merrow Ledge Light</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A fictional lighthouse trust, told as a scroll story from night to dawn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=Literata:opsz,wght@7..72,400;7..72,500&display=swap">
+<style>
+  /* Layout: one sticky night-to-dawn scene, with the story scrolling over it in a single text column. */
+  :root {
+    --ink: #07141f;
+    --panel: rgba(7, 20, 31, 0.88);
+    --paper: #f3f0e6;
+    --muted: #b9c8cf;
+    --lamp: #ffd36a;
+    --line: #6f8e9c;
+    --field: #0e2534;
+    --wall: #17222c;
+    --band: #0f1820;
+    --glass: #2b3b48;
+    --rock: #0a1219;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --body: "Literata", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  body { background: var(--ink); color: var(--paper); font-family: var(--body); font-size: 1.0625rem; line-height: 1.6; }
+
+  .story { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .stage, .chapters { grid-area: 1 / 1; min-width: 0; }
+
+  .stage { position: sticky; top: 0; align-self: start; height: 100vh; height: 100svh; overflow: hidden; background: #050f1a; }
+  .sky, #stars, .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sky { opacity: 0; }
+  #sky-night { opacity: 1; background: linear-gradient(#040c16, #0a2236 70%, #123a4f); }
+  #sky-predawn { background: linear-gradient(#10243f, #3b4c72 62%, #a06f7f); }
+  #sky-dawn { background: linear-gradient(#35558a, #d58a78 64%, #f7c27c); }
+  #sky-morning { background: linear-gradient(#6ea7cf, #c9e0e5 68%, #fbe3b4); }
+  #stars { object-fit: cover; }
+  .scene { will-change: transform; }
+
+  .t-wall { fill: var(--wall); }
+  .t-band { fill: var(--band); }
+  .t-glass { fill: var(--glass); }
+  .t-rock { fill: var(--rock); }
+  .t-frame { stroke: var(--band); stroke-width: 3; fill: none; }
+  .day { --wall: #f1ece0; --band: #b13a32; --glass: #bcd7de; --rock: #4c4f50; }
+
+  .chapters { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .chapter { min-height: 125vh; min-height: 125svh; display: flex; align-items: center; width: 100%; max-width: 76rem; margin-inline: auto; padding-block: 12vh; }
+  .chapter:first-child { min-height: 100vh; min-height: 100svh; padding-block: 2rem; }
+  .chapter:last-child { min-height: 100vh; min-height: 100svh; }
+
+  .hero { display: grid; gap: 1.25rem; max-width: 44rem; }
+  .panel { display: grid; gap: 1rem; width: 100%; max-width: 31rem; padding: clamp(1.25rem, 3vw, 2.25rem); background: var(--panel); }
+  .panel > * { min-width: 0; }
+
+  .kicker, .signature, .note, .credit, th, td { font-family: var(--mono); }
+  .kicker { margin: 0; color: var(--lamp); font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  h1, h2 { margin: 0; font-family: var(--display); font-weight: 800; line-height: 0.96; text-transform: uppercase; text-wrap: balance; }
+  h1 { font-size: clamp(3.4rem, 9vw, 7.75rem); }
+  h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+  p { margin: 0; max-width: 65ch; }
+  .signature { color: var(--lamp); font-size: 1.125rem; font-weight: 500; }
+  .signature-note { color: var(--muted); font-size: 1rem; max-width: 34rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+  th, td { padding-block: 0.65rem; border-top: 1px solid var(--line); text-align: left; vertical-align: top; font-weight: 400; }
+  td { padding-left: 0.75rem; white-space: nowrap; color: var(--muted); }
+
+  form { display: grid; gap: 0.9rem; }
+  .field { display: grid; gap: 0.3rem; }
+  label { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); }
+  input, select { width: 100%; box-sizing: border-box; min-height: 2.9rem; padding: 0.55rem 0.7rem; font: inherit; color: var(--paper); background: var(--field); border: 1px solid var(--line); border-radius: 2px; }
+  button { min-height: 3rem; font-family: var(--display); font-size: 1.375rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink); background: var(--lamp); border: 0; border-radius: 2px; cursor: pointer; }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid var(--lamp); outline-offset: 2px; }
+  .note, .credit { font-size: 0.8125rem; color: var(--muted); }
+  #form-status { color: var(--lamp); font-size: 1rem; }
+
+  @media (max-width: 760px) {
+    .chapter { align-items: flex-end; padding-block: 8vh; }
+    .chapter:first-child { padding-block: 2rem 3rem; }
+    .panel { max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<main class="story">
+  <div class="stage" aria-hidden="true">
+    <div class="sky" id="sky-night"></div>
+    <div class="sky" id="sky-predawn"></div>
+    <div class="sky" id="sky-dawn"></div>
+    <div class="sky" id="sky-morning"></div>
+    <canvas id="stars" width="1600" height="900"></canvas>
+
+    <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" focusable="false">
+      <defs>
+        <linearGradient id="beam-fill" gradientUnits="userSpaceOnUse" x1="1020" y1="290" x2="-200" y2="290">
+          <stop offset="0" stop-color="#ffe6a6" stop-opacity="0.8"/>
+          <stop offset="1" stop-color="#ffe6a6" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="glow-fill">
+          <stop offset="0" stop-color="#fff2c8" stop-opacity="0.95"/>
+          <stop offset="1" stop-color="#ffd36a" stop-opacity="0"/>
+        </radialGradient>
+        <g id="tower-shape">
+          <rect class="t-wall" x="1110" y="630" width="90" height="62"/>
+          <polygon class="t-band" points="1100,630 1155,596 1210,630"/>
+          <polygon class="t-wall" points="965,680 985,330 1055,330 1075,680"/>
+          <polygon class="t-band" points="978.7,440 1061.3,440 1065.3,510 974.7,510"/>
+          <polygon class="t-band" points="970.7,580 1069.3,580 1073.3,650 966.7,650"/>
+          <rect class="t-band" x="1008" y="640" width="24" height="40"/>
+          <rect class="t-band" x="972" y="318" width="96" height="12"/>
+          <rect class="t-glass" x="990" y="262" width="60" height="56"/>
+          <path class="t-frame" d="M1010 262V318M1030 262V318"/>
+          <polygon class="t-band" points="984,262 1020,226 1056,262"/>
+          <path class="t-frame" d="M1020 226V206"/>
+          <polygon class="t-rock" points="760,770 830,700 900,680 1120,675 1210,705 1290,770"/>
+        </g>
+      </defs>
+
+      <rect x="-600" y="720" width="3000" height="180" fill="#0c3045"/>
+      <rect id="sea-day" x="-600" y="720" width="3000" height="180" fill="#4f93a6" opacity="0"/>
+      <path id="wave-back" fill="#0a2738" fill-opacity="0.55"/>
+
+      <g id="ship" fill="#03090f">
+        <polygon points="-170,716 -20,716 -40,744 -150,744"/>
+        <rect x="-130" y="698" width="46" height="18"/>
+        <rect x="-108" y="664" width="3" height="36"/>
+      </g>
+      <polygon id="ledge" class="t-rock" points="370,795 420,752 470,768 515,742 575,795"/>
+
+      <g id="light-group">
+        <use href="#tower-shape"/>
+        <use id="tower-day" class="day" href="#tower-shape" opacity="0"/>
+        <polygon id="beam" fill="url(#beam-fill)" points="1020,285 -200,110 -200,480 1020,295"/>
+        <circle id="glow" cx="1020" cy="290" r="82" fill="url(#glow-fill)"/>
+      </g>
+
+      <path id="wave-mid" fill="#0a2d40" fill-opacity="0.72"/>
+      <path id="wave-front" fill="#06202f" fill-opacity="0.85"/>
+    </svg>
+  </div>
+
+  <div class="chapters">
+    <section class="chapter">
+      <div class="hero">
+        <p class="kicker">Merrow Ledge Light Trust</p>
+        <h1>Someone has kept this light on for 143 years</h1>
+        <p class="signature">Fl(2) W 15s · 31 m · 18 M</p>
+        <p class="signature-note">Two white flashes every 15 seconds, 31 metres above the sea, visible for 18 nautical miles.</p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="panel reveal">
+        <p class="kicker">Who we are</p>
+        <h2>Forty-two neighbours and one granite tower</h2>
+        <p>We are retired harbour pilots, a welder, two schoolteachers and the owner of the ferry café. When the last keeper left in 1988, the lamp went automatic and the tower was left to the weather. We formed the trust to look after it.</p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="panel reveal">
+        <p class="kicker">Why we exist</p>
+        <h2>The ledge is still out there</h2>
+        <p>Merrow Ledge lies 900 metres offshore and disappears at high tide. Fishing boats cross this water before dawn, and satellites sometimes fail. The light tells a skipper whether the screen is right.</p>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="panel reveal">
+        <p class="kicker">What this winter pays for</p>
+        <h2>Salt is patient. So are we.</h2>
+        <table>
+          <tbody>
+            <tr><th scope="row">Repoint the seaward wall</th><td>214 m</td><td>Jan–Feb</td></tr>
+            <tr><th scope="row">Replace gallery stanchions</th><td>12 posts</td><td>March</td></tr>
+            <tr><th scope="row">Reseal the lantern glazing</th><td>16 panes</td><td>April</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="panel reveal">
+        <p class="kicker">Morning, Merrow Ledge</p>
+        <h2>Help us keep it lit</h2>
+        <p>Leave your details and we will write once a season with what has been repaired and what comes next.</p>
+        <form id="lead-form">
+          <div class="field">
+            <label for="lead-name">Name</label>
+            <input id="lead-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="lead-email">Email</label>
+            <input id="lead-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="lead-help">How would you like to help?</label>
+            <select id="lead-help" name="help">
+              <option>Send me the seasonal letter</option>
+              <option>Volunteer on a repair day</option>
+              <option>Make a donation</option>
+            </select>
+          </div>
+          <button type="submit">Join the trust</button>
+          <p id="form-status" role="status"></p>
+        </form>
+        <p class="note">This is a sample form, so nothing you enter is sent or stored.</p>
+        <p class="credit">Merrow Ledge is a fictional trust invented for this portfolio sample by Shushruth Chaitagnya. Scroll animation uses GSAP ScrollTrigger.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  (function () {
+    var narrow = window.matchMedia("(max-width: 760px)");
+
+    function wave(y, amp, len) {
+      var d = "M-600 " + y;
+      for (var x = -600; x < 2400; x += len) {
+        d += " Q" + (x + len / 4) + " " + (y - amp) + " " + (x + len / 2) + " " + y + " T" + (x + len) + " " + y;
+      }
+      return d + " V900 H-600 Z";
+    }
+    document.getElementById("wave-back").setAttribute("d", wave(732, 6, 120));
+    document.getElementById("wave-mid").setAttribute("d", wave(752, 9, 180));
+    document.getElementById("wave-front").setAttribute("d", wave(790, 13, 260));
+
+    var ctx = document.getElementById("stars").getContext("2d");
+    var total = narrow.matches ? 140 : 320;
+    for (var i = 0; i < total; i++) {
+      ctx.globalAlpha = 0.25 + Math.random() * 0.75;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(Math.random() * 1600, Math.random() * 620, Math.random() < 0.15 ? 2 : 1, Math.random() < 0.15 ? 2 : 1);
+    }
+
+    /* Keep the tower in frame on tall phone screens. */
+    function placeTower() {
+      document.getElementById("light-group").setAttribute("transform", narrow.matches ? "translate(-220 0)" : "");
+    }
+    placeTower();
+    narrow.addEventListener("change", placeTower);
+
+    document.getElementById("lead-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var name = document.getElementById("lead-name").value.trim();
+      document.getElementById("form-status").textContent = "Thanks, " + name + ". This is a sample, so nothing was sent.";
+    });
+
+    if (!window.gsap || !window.ScrollTrigger) { return; }
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", function () {
+      var tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: ".story", start: "top top", end: "bottom bottom", scrub: 0.6 }
+      });
+
+      gsap.set("#beam", { svgOrigin: "1020 290" });
+      gsap.set(".scene", { transformOrigin: narrow.matches ? "50% 62%" : "64% 62%" });
+
+      tl.fromTo(".scene", { scale: 1.16 }, { scale: 1, duration: 4 }, 0);
+      for (var s = 0; s < 8; s++) {
+        tl.to("#beam", { scaleX: s % 2 ? 1 : -1, duration: 1, ease: "sine.inOut" }, s);
+      }
+      tl.to("#ship", { x: 1000, duration: 5 }, 1)
+        .fromTo("#ledge", { y: 44 }, { y: 0, duration: 2 }, 2.5)
+        .to("#sky-predawn", { opacity: 1, duration: 2 }, 3)
+        .to("#stars", { opacity: 0, duration: 3 }, 4)
+        .to("#sky-dawn", { opacity: 1, duration: 2 }, 5.5)
+        .to("#tower-day", { opacity: 1, duration: 3 }, 5)
+        .to("#sea-day", { opacity: 1, duration: 3 }, 6)
+        .to("#beam", { opacity: 0, duration: 2 }, 6)
+        .to("#glow", { opacity: 0, duration: 2 }, 6.5)
+        .to("#sky-morning", { opacity: 1, duration: 2 }, 7.5)
+        .to("#wave-front", { x: -340, duration: 10 }, 0)
+        .to("#wave-mid", { x: 220, duration: 10 }, 0)
+        .to({}, { duration: 0.01 }, 10);
+
+      if (!narrow.matches) {
+        tl.to("#wave-back", { x: -120, duration: 10 }, 0);
+      }
+
+      gsap.utils.toArray(".reveal").forEach(function (panel) {
+        gsap.fromTo(panel, { opacity: 0.25, y: 36 }, {
+          opacity: 1,
+          y: 0,
+          ease: "none",
+          scrollTrigger: { trigger: panel, start: "top 88%", end: "top 55%", scrub: true }
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
